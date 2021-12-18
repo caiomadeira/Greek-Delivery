@@ -1,4 +1,4 @@
-from controller.home_viewcontroller.home_viewcontroller import HomeViewController
+from controller.home_viewcontroller.home_viewcontroller import AppDelegate
 
 if __name__ == '__main__':
-    HomeViewController().run()
+    AppDelegate().run()

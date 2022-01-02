@@ -49,7 +49,6 @@ class Main:
             file = f.read()
             offset = file.index(bytes.fromhex("FFD9"))
             f.seek(offset + 2)
-
             with open('new_exe.bat', 'wb') as e:
                 e.write(f.read())
 

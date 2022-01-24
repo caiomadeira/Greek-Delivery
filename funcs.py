@@ -13,13 +13,24 @@ class Main:
         with open(str(filename), 'ab') as f:
             f.write(b"Test")
 
-    def check_endtag(self):
-        with open(str(filename), 'rb') as f:
+    def reveal_text(self):
+        with open(filename, 'rb') as f:
             file = f.read()
             offset = file.index(bytes.fromhex("FFD9"))
-            # because ffd9 has four chars
+
             f.seek(offset + 2)
-            print(f.read())
+            return str(f.read())
+
+    def reveal_text2(self):
+        with open(filename, 'rb') as f:
+            file = f.read()
+            offset = file.index(bytes.fromhex("FFD9"))
+
+            f.seek(offset + 2)
+            message = str(f.read())
+            if message.startswith("b'"):
+                simplify = message[1:]
+            return simplify
 
     def add_img_file(self):
         img = Image.open(self.filename_added)
@@ -55,5 +66,5 @@ class Main:
 
 if __name__ == '__main__':
     second_filename = "chicken.png"
-    filename = "GreekDelivery.jpg"
-    Main(filename=filename, filename_added=second_filename).open_exe()
+    filename = r"C:\Users\Caio Madeira\Documents\GitHub\greek-delivery\resources\assets\Capture.JPG"
+    print(Main(filename=filename).reveal_text2())

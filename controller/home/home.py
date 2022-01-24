@@ -1,29 +1,12 @@
 import io
 import time
-
-from kivymd.uix.filemanager import MDFileManager
-from kivymd.uix.floatlayout import FloatLayout
-from kivymd.app import MDApp
-from kivy.lang import Builder
+import random
 from kivymd.uix.card import MDCard
-from kivy.clock import Clock
-from kivymd.font_definitions import theme_font_styles
-from kivy.clock import Clock
-from kivy.uix.image import Image
-from kivymd.uix.banner import MDBanner
-from kivy.core.text import LabelBase
 from kivymd.uix.behaviors import FocusBehavior
 from kivymd.uix.button import MDRaisedButton, MDIconButton
 from kivy.uix.screenmanager import Screen, ScreenManager
-from kivymd.toast import toast
-from kivymd.uix.boxlayout import BoxLayout
-from utils.custom_fonts.custom_fonts import CustomFonts
-# from utils.file_manager.file_manager import FileManager
-from viewmodel.hidetext_viewmodel import HideTextViewModel
-from kivy.lang.builder import Builder
 from plyer import filechooser
-
-from kivymd.uix.textfield import MDTextFieldRound, MDTextField
+from pathlib import Path
 
 
 # Option 1 Screen
@@ -78,6 +61,55 @@ class HideImageView(Screen):
             time.sleep(2)
 
 
+# fake door
+class RevealImageView(Screen):
+    def file_chooser_reveal(self):
+        filechooser.open_file(on_selection=self.selected)
+
+    def selected(self, selection):
+        reveal = self.ids.selected_path_reveal.text
+        if selection:
+            self.ids.selected_path_reveal.text = selection[0]
+            time.sleep(2)
+            message = self.reveal_text(filename=selection[0])
+            if message is not None:
+                print(message)
+                time.sleep(1)
+
+                self.ids.reveled_message.text = message
+                time.sleep(1)
+                self.save_message(message=message)
+                self.ids.selected_path_reveal.text = 'Message saved in text file in your user folder.'
+            else:
+                self.ids.reveled_message.text = "Empty."
+
+    def reveal_text(self, filename):
+        with open(filename, 'rb') as f:
+            file = f.read()
+            offset = file.index(bytes.fromhex("FFD9"))
+
+            f.seek(offset + 2)
+            message = str(f.read())
+            if message.startswith("b'"):
+                simplify = message[1:]
+            return simplify
+
+    def save_message(self, message):
+        hash = random.getrandbits(128)
+        home_path = Path.home()
+        if message != "" or message != "Empty.":
+            with open(f"{home_path}/gd_text_{str(hash)}.txt", "w+") as f:
+                f.write(message)
+                f.close()
+        time.sleep(1)
+
+
+
+# fake door
+class FakeDoorView(Screen):
+    pass
+
+
 # Option 3 Screen
 class HideFileView(Screen):
     pass
@@ -98,4 +130,3 @@ class HomeCard(MDCard):
 class HomeView(Screen):
     def home_opencard(self):
         self.add_widget(HomeCard())
-

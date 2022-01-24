@@ -27,6 +27,10 @@ Screen:
                 name: 'hide_text'
             HideImageView:
                 name: 'hide_img'
+            FakeDoorView:
+                name: 'fake_door'
+            RevealImageView:
+                name: 'reveal'
 
 <HomeCard>:
     id: home_card
@@ -44,9 +48,14 @@ Screen:
             markup: True
             theme_text_color: 'Custom'
             text_color: 1, 1, 1, 1
-            text: 'Sobre'
+            text: 'About'
 
     MDFloatLayout:
+        MDLabel:
+            text: 'BETA v0.1.0'
+            pos_hint: {'center_x': .5, 'center_y': .6}
+            halign: 'center'
+
         MDLabel:
             text: 'Created by Caio Madeira'
             pos_hint: {'center_x': .5, 'center_y': .5}
@@ -88,10 +97,10 @@ Screen:
         unfocus_color: app.theme_cls.primary_color
         size_hint_x: .9
         size_hint_x: .5
-        text: 'Hide some Image'
-        pos_hint: {'center_x': .5, 'center_y': .4}
+        text: 'Reveal an image'
+        pos_hint: {'center_x': .5, 'center_y': .3}
         on_release:
-            root.manager.current = 'hide_img'
+            root.manager.current = 'reveal'
             root.manager.transition.direction = 'left'
 
     ButtonFocusBehavior:
@@ -99,8 +108,11 @@ Screen:
         unfocus_color: app.theme_cls.primary_color
         size_hint_x: .9
         size_hint_x: .5
-        text: 'Hide some File'
-        pos_hint: {'center_x': .5, 'center_y': .3}
+        text: 'Hide some Image'
+        pos_hint: {'center_x': .5, 'center_y': .4}
+        on_release:
+            root.manager.current = 'fake_door'
+            root.manager.transition.direction = 'left'
 
     MDTextButton:
         text: '@Caio Madeira'
@@ -142,7 +154,7 @@ Screen:
         MDLabel:
             id: selected_path
             font_size: '20sp'
-            text: 'Caminho:'
+            text: 'Path:'
             halign: 'center'
             pos_hint: {'center_x': .5, 'center_y': .4}
 
@@ -203,3 +215,63 @@ Screen:
             size: self.size
             pos_hint: {'center_x': .7, 'center_y': .6}
 
+<FakeDoorView>:
+    FloatLayout:
+        MDIconButton:
+            icon: 'arrow-left-circle'
+            pos_hint: {'center_x': .1, 'center_y': .9}
+            on_release:
+                root.manager.current = 'home'
+                root.manager.transition.direction = 'right'
+
+        MDLabel:
+            id: img_selected_label
+            font_size: '20sp'
+            text: 'Coming soon...'
+            halign: 'center'
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            size_hint: .3, .3
+
+<RevealImageView>:
+    FloatLayout:
+        MDLabel:
+            font_style: 'GelioFasolada'
+            font_size: '70sp'
+            halign: 'center'
+            text: 'Greek Delivery'
+            pos_hint: {'center_x': .5, 'center_y': .9}
+
+        MDIconButton:
+            icon: 'arrow-left-circle'
+            pos_hint: {'center_x': .1, 'center_y': .9}
+            on_release:
+                root.manager.current = 'home'
+                root.manager.transition.direction = 'right'
+
+        MDLabel:
+            id: reveled_message
+            font_size: '20sp'
+            text: 'Message:\n'
+            halign: 'center'
+            pos_hint: {'center_x': .5, 'center_y': .6}
+
+        MDLabel:
+            id: selected_path_reveal
+            font_size: '20sp'
+            text: 'Image: '
+            halign: 'center'
+            pos_hint: {'center_x': .5, 'center_y': .7}
+
+        MDRaisedButton:
+            size_hint_x: .9
+            text: 'Reveal.'
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release: root.file_chooser_reveal()
+
+        MDLabel:
+            id: result_label
+            font_size: '20sp'
+            text: ''
+            text_color: 255, 0, 0, 1
+            halign: 'center'
+            pos_hint: {'center_x': .5, 'center_y': .4}

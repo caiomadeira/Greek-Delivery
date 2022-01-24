@@ -14,6 +14,15 @@ from kivy.core.window import Window
 from utils.theme.theme import Theme
 from utils.custom_fonts.custom_fonts import CustomFonts
 from controller.home.home import HomeView, HomeCard, ButtonFocusBehavior
+from kivy.config import Config
+from kivy import platform
+import sys
+
+if platform == 'win' or sys.platform == 'linux2' or platform == 'macosx':
+    Config.set('graphics', 'width', '5')
+    Config.set('graphics', 'height', '5')
+elif platform == 'ios' or platform == 'android':
+    pass
 
 
 class NavigationControl(ScreenManager):
@@ -38,14 +47,12 @@ class AppDelegate(MDApp, Theme):
             self.theme_cls.theme_style = "Light"
 
     def build(self):
-        KV_VIEW = ['view/home/home.kv']
-        DEBUG = True
         self.set_app_title()
         self.set_app_icon()
         self.setup_theme(theme_cls=self.theme_cls)
         CustomFonts().setup_fonts(theme_cls=self.theme_cls)
-        sm.add_widget(Builder.load_file(r'C:\Users\Caio Madeira\Documents\GitHub\greek-delivery\view\splash\splash.kv'))
-        sm.add_widget(Builder.load_file(r'C:\Users\Caio Madeira\Documents\GitHub\greek-delivery\view\home\home.kv'))
+        sm.add_widget(Builder.load_file(r'view\splash\splash.kv'))
+        sm.add_widget(Builder.load_file(r'view\home\home.kv'))
 
         return sm
 

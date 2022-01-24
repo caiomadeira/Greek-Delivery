@@ -1,4 +1,10 @@
 MDScreen:
+    canvas:
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
     name: 'splash'
     on_enter: self.ids.progress.start()
 
@@ -6,7 +12,7 @@ MDScreen:
         cols: 1
         rows: 2
         Image:
-            source: r'C:\Users\Caio Madeira\Documents\GitHub\greek-delivery\resources\assets\greek-delivery-logo-no-background.png'
+            source: r'resources/assets/logo_1.png'
             allow_stretch: True
             anim_delay: 0
 
